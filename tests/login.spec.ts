@@ -1,7 +1,7 @@
 import { Page, test, expect } from "@playwright/test";
 import { Alerts } from "./pages/alerts";
 
-test.describe.only("Alerts handling tests", () => {
+test.describe("Alerts handling tests", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("https://www.letskodeit.com/practice");
   });
