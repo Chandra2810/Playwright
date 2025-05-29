@@ -1,28 +1,28 @@
 import { Page, Locator, expect } from "@playwright/test";
 
-export class SignUpForm {
-  readonly page: Page;
-  readonly fullName: Locator;
-  readonly email: Locator;
-  readonly button: Locator;
-  readonly selectGender: Locator
-  constructor(page: Page) {
-    this.fullName = page.locator("#username");
-    this.email = page.locator("#email");
-    this.button = page.getByText("SignUp Form");
-    this.selectGender = page.locator('select[name="sgender"]')
+export class AddUser {
+  readonly page: Page
+  readonly userForm: Locator
+  readonly firstName: Locator
+  readonly lastName: Locator
+  readonly emailId: Locator
+  readonly password: Locator
+  readonly submitBtn : Locator
+  constructor(page:Page){
+    this.page = page,
+    this.userForm = page.locator('form#add-user'),
+    this.firstName = page.getByPlaceholder('First Name', {exact: true})
+    this.lastName = page.getByPlaceholder('Last Name', {exact: true})
+    this.emailId = page.getByPlaceholder('Email', {exact: true})
+    this.password = page.getByPlaceholder('Password', {exact: true})
+    this.submitBtn = page.getByRole('button', {name: 'Submit'})
   }
-  async fillForm(username: string, emailId: string): Promise<void> {
-    try {
-      await this.button.click();
-      await this.fullName.fill(username);
-      await this.email.fill(emailId);
-      await this.selectGender.isVisible()
-      await this.selectGender.selectOption({value: 'female'})
-      await expect(this.selectGender).toHaveValue('female')
-      
-    } catch (error) {
-      console.error(`${error}`);      
-    }
+  async addUserContactsAndSubmit(fName: string, lName: string, Password: string, email: string){
+    await this.page.goto('https://thinking-tester-contact-list.herokuapp.com/addUser')
+    await this.firstName.fill(fName)
+    await this.lastName.fill(lName)
+    await this.password.fill(Password)
+    await this.emailId.fill(email)
+    await this.submitBtn.click()
   }
 }
